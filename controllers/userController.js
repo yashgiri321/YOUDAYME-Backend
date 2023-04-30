@@ -40,24 +40,14 @@ export const register = catchAsyncError(async (req,res,next)=>{
 });
 
 export const login = catchAsyncError(async (req,res,next)=>{
-
-    const {email,password} = req.body;
-
-
-
+  const {email,password} = req.body;
    if( !email || !password)
    return next(new ErrorHandler("Please enter all field",400));
-
-   const user = await User.findOne({ email }).select("+password");
-
-   if(!user) return next( new ErrorHandler("User Doesn't  Exist",401));
-
-   
-   const isMatch =  await user.comparePassword(password);
-
+   const users = await User.findOne({ email }).select("+password");
+   if(!users) return next( new ErrorHandler("User Doesn't  Exist",401));
+   const isMatch =  await users.comparePassword(password);
    if(!isMatch) return next(new ErrorHandler("Incorrect Email or Password", 401));
-
-   sendToken(res,user,`Welcome back,${user.name}`, 200);
+   sendToken(res,users,`Welcome back,${users.name}`, 200);
 });
 
 export const logout = catchAsyncError(async (req, res, next) => {
