@@ -26,6 +26,9 @@ nodeCron.schedule("0 0 0 1 * *",async ()=>{
  }
 });
 
+app.get("/",(req,res)=>{
+  return res.status(200).json({success:true,message:"BSDK Server is running..."})
+})
 
 app.listen(process.env.PORT,()=>{
   console.log(`Server is   working on port: ${process.env.PORT}`);
